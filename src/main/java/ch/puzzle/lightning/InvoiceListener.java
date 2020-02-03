@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @ApplicationScoped
 public class InvoiceListener {
 
-    @ConfigProperty(name = "app.ln.invoice.sse-url")
+    @ConfigProperty(name = "app.backend.url")
     String invoiceSseUrl;
 
     private SseEventSource source;

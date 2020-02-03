@@ -43,6 +43,7 @@
     </dependency>
   </dependencies>
   <build>
+    <finalName>beertap-bridge</finalName>
     <plugins>
       <plugin>
         <groupId>io.quarkus</groupId>
