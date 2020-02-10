@@ -30,7 +30,9 @@ public class ProcessInvoker {
         CompletableFuture.supplyAsync(() -> {
             try {
                 if (appExecPath.filter(Predicate.not(String::isBlank)).isPresent()) {
-                    return executeCommand(invoice);
+                    String command = appExecPath.get();
+                    LOG.info("Executing command " + command);
+                    return executeCommand(command, invoice);
                 }
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
@@ -47,7 +49,7 @@ public class ProcessInvoker {
     }
 
 
-    private Integer executeCommand(Invoice invoice) throws IOException, InterruptedException {
+    private Integer executeCommand(String command, Invoice invoice) throws IOException, InterruptedException {
         String productsArg = "--products=" + getFromMemo(invoice.memo);
         if(!invoice.memo.startsWith(beerTapName)) {
             LOG.info("Not a beerTap invoice");
@@ -56,7 +58,7 @@ public class ProcessInvoker {
 
         LOG.info("Command: " + appExecPath + ", Args: " + productsArg);
 
-        ProcessBuilder pb = new ProcessBuilder(appExecPath.orElse("echo"), productsArg);
+        ProcessBuilder pb = new ProcessBuilder(command, productsArg);
         Map<String, String> env = pb.environment();
         pb.directory(Paths.get(".").toFile());
         Process p = pb.start();
