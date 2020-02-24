@@ -51,15 +51,14 @@ public class ProcessInvoker {
 
     private Integer executeCommand(String command, Invoice invoice) throws IOException, InterruptedException {
         String productsArg = "--products=" + getFromMemo(invoice.memo);
-        if(!invoice.memo.startsWith(beerTapName)) {
-            LOG.info("Not a beerTap invoice");
+        if (!invoice.memo.startsWith(beerTapName)) {
+            LOG.info("Not a " + beerTapName + "invoice: " + invoice.memo);
             return 10;
         }
 
         LOG.info("Command: " + appExecPath + ", Args: " + productsArg);
 
         ProcessBuilder pb = new ProcessBuilder(command, productsArg);
-        Map<String, String> env = pb.environment();
         pb.directory(Paths.get(".").toFile());
         Process p = pb.start();
         Integer returnCode = p.waitFor();
